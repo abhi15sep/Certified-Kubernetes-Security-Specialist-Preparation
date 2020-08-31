@@ -9,10 +9,10 @@ This guide is being authored before actual certification has went live. The best
 
 ## Cluster Setup – 10%
 * Use Network security policies to restrict cluster level access
-  * [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) Official documentation - kubernetes.io
-  * [Get started with Kubernetes network policy](https://docs.projectcalico.org/security/kubernetes-network-policy) - calico is the leading implementation of Network Policy in kubernetes and comes as default option on managed Kubernetes like GKE. There are 3 tutorials to practice your Network Policy skills. - projectcalico.org
-  * [kubernetes-network-policy-recipes](https://github.com/ahmetb/kubernetes-network-policy-recipes) Excellent collection of Network Policy examples by ahmetb - github.com
-  * [Exploring Network Policies in Kubernetes](https://banzaicloud.com/blog/network-policy/) - thorough exploration of Netowork Polcies - banzaicloud.com
+  * [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) Official documentation - *kubernetes.io*
+  * [Get started with Kubernetes network policy](https://docs.projectcalico.org/security/kubernetes-network-policy) - calico is the leading implementation of Network Policy in kubernetes and comes as default option on managed Kubernetes like GKE. There are 3 tutorials to practice your Network Policy skills. - *projectcalico.org*
+  * [kubernetes-network-policy-recipes](https://github.com/ahmetb/kubernetes-network-policy-recipes) Excellent collection of Network Policy examples by ahmetb - *github.com*
+  * [Exploring Network Policies in Kubernetes](https://banzaicloud.com/blog/network-policy/) - thorough exploration of Netowork Polcies - *banzaicloud.com*
 * Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi)
 * Properly set up Ingress objects with security control
 * Protect node metadata and endpoints
@@ -41,6 +41,45 @@ This guide is being authored before actual certification has went live. The best
 
 ## Supply Chain Security – 20%
 * Minimize base image footprint
+  * We want to Minimize attack surface area
+    * Do not include build utilities in the final image by using [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/)
+    ```bash
+    FROM golang:1.15.0-alpine3.12
+    # Set the working directory
+    WORKDIR /go/src/github.com/hugomd/go-example
+    # Copy our main file
+    COPY main.go .
+    # Build the Golang app
+    RUN CGO_ENABLED=0 GOOS=linux go build -o app .
+    # Create the second stage of our build
+    FROM alpine
+    WORKDIR /app
+    # Copy from the first stage (--from=0)
+    COPY --from=0 /go/src/github.com/hugomd/go-example/app .
+    CMD ["./app"]
+    ```
+    * Aim for smaller distributions with least amount of utility bloat (think of using Alpine vs full-sized distributions)
+    * Distroless `scratch` images are most secure as they don't add anything but application itself. Modified example of a Go app which now runs distroless. Learn more about [distroless](https://github.com/GoogleContainerTools/distroless).
+    ```bash
+    FROM golang:1.15.0-alpine3.12
+    # Set the working directory
+    WORKDIR /go/src/github.com/hugomd/go-example
+    # Copy our main file
+    COPY main.go .
+    # Build the Golang app
+    RUN CGO_ENABLED=0 GOOS=linux go build -o app .
+    # Create the second stage of our build
+    FROM scratch
+    WORKDIR /app
+    # Copy from the first stage (--from=0)
+    COPY --from=0 /go/src/github.com/hugomd/go-example/app .
+    CMD ["./app"]
+    ```
+    * Use `.dockerignore` to avoid pulling in unnecessary files, secrets
+    * Don't run image as `root` user. Add least privilege user, group.
+    * Use `COPY` instead of `ADD` as `ADD` on URLs can result in arbitrary MITM attacks. Add is also susceptible to [Zip Slip Vulnerability](https://snyk.io/research/zip-slip-vulnerability)
+  * [3 simple tricks for smaller Docker images](https://learnk8s.io/blog/smaller-docker-images) Well written explanation on how to minimise size and security risks of your Docker images. - *learnk8s.io*
+  * [Docker Image Security Best Practices](https://res.cloudinary.com/snyk/image/upload/v1551798390/Docker_Image_Security_Best_Practices_.pdf) - concise pdf with best practices to follow. *snyk.io*
 * Secure your supply chain: whitelist allowed registries, sign and validate images
 * Use static analysis of user workloads (e.g.Kubernetes resources, Docker files)
 * Scan images for known vulnerabilities
