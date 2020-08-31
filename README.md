@@ -12,6 +12,7 @@ This guide is being authored before actual certification has went live. The best
   * [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) Official documentation - *kubernetes.io*
   * [Get started with Kubernetes network policy](https://docs.projectcalico.org/security/kubernetes-network-policy) - calico is the leading implementation of Network Policy in kubernetes and comes as default option on managed Kubernetes like GKE. There are 3 tutorials to practice your Network Policy skills. - *projectcalico.org*
   * [kubernetes-network-policy-recipes](https://github.com/ahmetb/kubernetes-network-policy-recipes) Excellent collection of Network Policy examples by ahmetb - *github.com*
+  * [Kubernetes Network Policies Best Practices](https://blog.alcide.io/kubernetes-network-policies-best-practices) - article on Network Policies best practices - *alcide.io*
   * [Exploring Network Policies in Kubernetes](https://banzaicloud.com/blog/network-policy/) - thorough exploration of Netowork Polcies - *banzaicloud.com*
 * Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi)
 * Properly set up Ingress objects with security control
@@ -34,6 +35,7 @@ This guide is being authored before actual certification has went live. The best
 
 ## Minimize Microservice Vulnerabilities – 20%
 * Setup appropriate OS level security domains e.g. using PSP, OPA, security contexts
+  * [Pod Security Policy](https://blog.alcide.io/pod-security-policy) - Article on Pod Security Policy - *alcide.io*
 * Manage Kubernetes secrets
 * Use container runtime sandboxes in multi-tenant environments (e.g. gvisor, kata containers)
 * Implement pod to pod encryption by use of mTLS
@@ -92,3 +94,4 @@ This guide is being authored before actual certification has went live. The best
 * Perform deep analytical investigation and identification of bad actors within environment
 * Ensure immutability of containers at runtime
 * Use Audit Logs to monitor access
+  * [Kubernetes Audit: Making Log Auditing a Viable Practice Again.](https://blog.alcide.io/kubernetes-audit-making-log-auditing-a-viable-practice-again) explanation of Kubernetes audit logging - *alcide.io*
