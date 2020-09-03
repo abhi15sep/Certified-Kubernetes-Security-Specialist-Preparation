@@ -104,6 +104,10 @@ This guide is being authored before actual certification has went live. The best
     * [ImagePolicyWebhook](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook) can be used to implement validation mechanisms. [kube-image-bouncer](https://github.com/flavio/kube-image-bouncer) is an example of such implementation. Read more about Admission Controllers [here](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/).
 * Use static analysis of user workloads (e.g.Kubernetes resources, Docker files)
 * Scan images for known vulnerabilities
+  * The [Anchore Engine](https://github.com/anchore/anchore-engine) is an open-source project that provides a centralized service for inspection, analysis, and certification of container images. The Anchore Engine is provided as a Docker container image that can be run standalone or within an orchestration platform such as Kubernetes, Docker Swarm, Rancher, Amazon ECS, and other container orchestration platforms.
+  * [Clair](https://github.com/quay/clair) is an open source project for the static analysis of vulnerabilities in application containers (currently including appc and docker).
+  * [Vuls](https://github.com/future-architect/vuls) Vulnerability scanner for Linux/FreeBSD, agentless, written in golang. Can scan containers as well as hosts.
+  * [OpenSCAP](https://github.com/OpenSCAP/openscap) Open Source Security Compliance Solution - The oscap program is a command line tool that allows users to load, scan, validate, edit, and export SCAP documents.
 
 
 ## Monitoring, Logging and Runtime Security – 20%
