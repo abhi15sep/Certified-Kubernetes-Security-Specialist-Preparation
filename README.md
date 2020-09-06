@@ -51,7 +51,9 @@ This guide is being authored before actual certification has went live. The best
 * Setup appropriate OS level security domains e.g. using PSP, OPA, security contexts
   * [Pod Security Policy](https://blog.alcide.io/pod-security-policy) - Article on Pod Security Policy - *alcide.io*
 * Manage Kubernetes secrets
-* Use container runtime sandboxes in multi-tenant environments (e.g. gvisor, kata containers)
+  * [Practical lab around Secrets](https://www.katacoda.com/courses/kubernetes/managing-secrets) - *katacode.com*
+* Use container runtime sandboxes in multi-tenant environments (e.g. [gvisor](https://github.com/google/gvisor), [kata containers](https://katacontainers.io/))
+  *
 * Implement pod to pod encryption by use of mTLS
 
 ## Supply Chain Security – 20%
